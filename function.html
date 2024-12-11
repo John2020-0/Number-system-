@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number System Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('pexels-photo-1766838.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly translucent */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+        }
+        label {
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .result-container {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+            margin-bottom: 5px;
+            display: none; /* Hide by default */
+        }
+        .result-container p {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .result-container span {
+            font-size: 18px;
+            color: #555;
+        }
+        .binary-result {
+            background-color: #e8f8e8;
+        }
+        .octal-result {
+            background-color: #f8e8e8;
+        }
+        .decimal-result {
+            background-color: #e8e8f8;
+        }
+        .hex-result {
+            background-color: #f8f8e8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Number System Converter</h1>
+
+        <label for="decimalInput">Enter Decimal: </label>
+        <input type="text" id="decimalInput" placeholder="Enter decimal number" oninput="convertFromDecimal()">
+
+        <div class="result-container binary-result" id="binaryResultContainer">
+            <p>Binary: <span id="binaryResult"></span></p>
+        </div>
+        <div class="result-container octal-result" id="octalResultContainer">
+            <p>Octal: <span id="octalResult"></span></p>
+        </div>
+        <div class="result-container decimal-result" id="decimalResultContainer">
+            <p>Decimal: <span id="decimalResult"></span></p>
+        </div>
+        <div class="result-container hex-result" id="hexResultContainer">
+            <p>Hexadecimal: <span id="hexResult"></span></p>
+        </div>
+    </div>
+
+    <script>
+        function convertToBase(decimalValue, base) {
+            const digits = "0123456789ABCDEF"; // Digits for bases up to 16
+            let result = "";
+            let num = decimalValue;
+
+            if (num === 0) return "0"; 
+
+            while (num > 0) {
+                const remainder = num % base;
+                result = digits[remainder] + result;
+                num = Math.floor(num / base);
+            }
+
+            return result;
+        }
+
+        // Convert from Decimal input
+        function convertFromDecimal() {
+            const input = document.getElementById("decimalInput").value.trim();
+
+            // Check if it's a valid positive integer
+            if (/^\d+$/.test(input)) {
+                const decimalValue = parseInt(input, 10);
+                updateResults(decimalValue);
+            } else {
+                clearResults();
+            }
+        }
+
+        // Update results using the custom conversion function
+        function updateResults(decimalValue) {
+            const binary = convertToBase(decimalValue, 2);
+            const octal = convertToBase(decimalValue, 8);
+            const hexadecimal = convertToBase(decimalValue, 16);
+
+            document.getElementById("binaryResult").textContent = binary;
+            document.getElementById("octalResult").textContent = octal;
+            document.getElementById("decimalResult").textContent = decimalValue;
+            document.getElementById("hexResult").textContent = hexadecimal;
+
+            document.getElementById("binaryResultContainer").style.display = "block";
+            document.getElementById("octalResultContainer").style.display = "block";
+            document.getElementById("decimalResultContainer").style.display = "block";
+            document.getElementById("hexResultContainer").style.display = "block";
+        }
+
+        // Clear all results if invalid input
+        function clearResults() {
+            document.getElementById("decimalInput").value = "";
+            document.getElementById("binaryResultContainer").style.display = "none";
+            document.getElementById("octalResultContainer").style.display = "none";
+            document.getElementById("decimalResultContainer").style.display = "none";
+            document.getElementById("hexResultContainer").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>
